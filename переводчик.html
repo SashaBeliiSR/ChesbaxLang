@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Переводчик Чехбахского языка</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    textarea {
+      width: 80%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #output {
+      width: 80%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+  </style>
+  <script>
+    const перевод = {
+      "А": "Λ", 
+      "Б": "Ɓ", 
+      "В": "ʌ", 
+      "Г": "ғ", 
+      "Д": "Ð", 
+      "Е": "Є", 
+      "Ё": "Ё", 
+      "Ж": "ʒ", 
+      "З": "Σ", 
+      "И": "І", 
+      "Й": "ι", 
+      "К": "Қ", 
+      "Л": "λ", 
+      "М": "ɯ", 
+      "Н": "И", 
+      "О": "Θ", 
+      "П": "π", 
+      "Р": "ү", 
+      "С": "ς", 
+      "Т": "т", 
+      "У": "ʊ", 
+      "Ф": "Φ", 
+      "Х": "χ", 
+      "Ц": "ц", 
+      "Ч": "ч", 
+      "Ш": "ш", 
+      "Щ": "Щ", 
+      "Ъ": "Ъ", 
+      "Ы": "ү", 
+      "Ь": "ь", 
+      "Э": "Ɛ", 
+      "Ю": "Ю", 
+      "Я": "Я"
+    };
+
+    const reverseTranslation = {
+      "Λ": "А",
+      "Ɓ": "Б",
+      "ʌ": "В",
+      "ғ": "Г",
+      "Ð": "Д",
+      "Є": "Е",
+      "Ё": "Ё",
+      "ʒ": "Ж",
+      "Σ": "З",
+      "І": "И",
+      "ι": "Й",
+      "Қ": "К",
+      "λ": "Л",
+      "ɯ": "М",
+      "И": "Н",
+      "Θ": "О",
+      "π": "П",
+      "ү": "Р",
+      "ς": "С",
+      "т": "Т",
+      "ʊ": "У",
+      "Φ": "Ф",
+      "χ": "Х",
+      "ц": "Ц",
+      "ч": "Ч",
+      "ш": "Ш",
+      "Щ": "Щ",
+      "Ъ": "Ъ",
+      "ү": "Ы",
+      "ь": "Ь",
+      "Ɛ": "Э",
+      "Ю": "Ю",
+      "Я": "Я"
+    };
+	
+	const saysTranslation = {
+      "Λ": "ч ",
+      "Ɓ": "х ",
+      "ʌ": "хи ",
+      "ғ": "г ",
+      "Ð": "д ",
+      "Є": "и ",
+      "Ё": "е ",
+      "ʒ": "а ",
+      "Σ": "р ",
+      "І": "ё ",
+      "ι": "я ",
+      "Қ": "пи ",
+      "λ": "л ",
+      "ɯ": "м ",
+      "И": "н ",
+      "Θ": "о ",
+      "π": "п ",
+      "ү": "р ",
+      "ς": "си ",
+      "т": "ри ",
+      "ʊ": "мы ",
+      "Φ": "ф ",
+      "χ": "хе ",
+      "ц": "ц ",
+      "ч": "ч ",
+      "ш": "щ ",
+      "Щ": "ш ",
+      "Ъ": "ды ",
+      "ү": "ы ",
+      "ь": "ли ",
+      "Ɛ": "э ",
+      "Ю": "ю ",
+      "Я": "тё "
+    };
+
+    function перевести(вОбратнуюСторону = false) {
+	  let текст = document.getElementById("ввод").value;
+	  let переведенныйТекст = "";
+	  let говоритсяТекст = "";
+
+	  const использоватьПравила = вОбратнуюСторону ? reverseTranslation : перевод;
+	  const говоритсяПравила = saysTranslation;
+
+	  for (let буква of текст) {
+		const переведеннаяБуква = использоватьПравила[буква.toUpperCase()] || буква;
+		переведенныйТекст += переведеннаяБуква;
+		говоритсяТекст += говоритсяПравила[переведеннаяБуква] || "";
+	  }
+
+	  document.getElementById("вывод").innerHTML = переведенныйТекст;
+	  document.getElementById("говорится").value = говоритсяТекст;
+	}
+
+
+    function скопировать() {
+      const текст = document.getElementById("вывод");
+      текст.select();
+      текст.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Текст скопирован!");
+    }
+	
+	function озвучить() {
+      const говоритсяТекст = document.getElementById("говорится").value;
+      
+      // Создаем новый объект SpeechSynthesisUtterance
+      const msg = new SpeechSynthesisUtterance();
+      msg.text = говоритсяТекст;
+
+      // Запускаем озвучивание
+      window.speechSynthesis.speak(msg);
+    }
+
+    function обратныйПеревод() {
+      перевести(true);
+    }
+  </script>
+</head>
+<body>
+  <h1>Переводчик Чехбахского языка</h1>
+  <textarea id="ввод" rows="4" placeholder="Введите текст на русском"></textarea><br>
+  <button onclick="перевести()">Перевести</button>
+  <button onclick="обратныйПеревод()">Обратный перевод</button><br>
+  <button onclick="скопировать()">Скопировать переведенный текст</button><br>
+  <textarea id="вывод" rows="4"></textarea>
+  <textarea id="говорится" rows="4"></textarea>
+  <button onclick="озвучить()">Озвучить</button>
+</body>
+</html>
